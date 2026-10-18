@@ -173,7 +173,7 @@ func isTimeout(err error) bool {
 // classify maps a dial error to a port state.
 func classify(err error) State {
 	switch {
-	case err == nil:
+	case err == nil, matchAny(err, resetErrors):
 		return StateOpen
 	case matchAny(err, refusedErrors):
 		return StateClosed

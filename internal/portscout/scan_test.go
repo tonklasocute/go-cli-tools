@@ -163,7 +163,7 @@ func TestClassify(t *testing.T) {
 	}{
 		{"nil", nil, StateOpen},
 		{"refused", refusedError(), StateClosed},
-		{"reset", &net.OpError{Op: "dial", Err: refusedErrors[1]}, StateClosed},
+		{"reset after handshake is open", &net.OpError{Op: "dial", Err: resetErrors[0]}, StateOpen},
 		{"deadline", context.DeadlineExceeded, StateFiltered},
 		{"other", errors.New("network is unreachable"), StateFiltered},
 		{"local exhaustion", &net.OpError{Op: "dial", Err: localErrors[0]}, StateError},

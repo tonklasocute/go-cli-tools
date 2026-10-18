@@ -18,8 +18,14 @@ const (
 	wsaenobufs       = syscall.Errno(10055)
 )
 
-// refusedErrors are the errno values meaning "the peer sent a RST".
-var refusedErrors = []error{wsaeconnrefused, wsaeconnreset, syscall.ECONNREFUSED}
+// refusedErrors are the errno values meaning "the peer answered the SYN with
+// a RST", i.e. nothing is listening.
+var refusedErrors = []error{wsaeconnrefused, syscall.ECONNREFUSED}
+
+// resetErrors are the errno values meaning the handshake completed but the
+// peer reset the connection before the dial returned — a service accepted
+// and immediately dropped us, so the port is open.
+var resetErrors = []error{wsaeconnreset}
 
 // localErrors are errno values meaning the probe could not be made because
 // this machine ran out of resources (sockets, ephemeral ports, buffers).
