@@ -9,31 +9,41 @@ Set Width 1280
 Set Height 680
 Set Padding 24
 Set Theme "Catppuccin Mocha"
-Set TypingSpeed 45ms
+Set TypingSpeed 40ms
 Set WindowBar Colorful
 
 Hide
+Type `export PATH="$PWD/bin:$PATH" PS1="\[\e[1;35m\]❯\[\e[0m\] "`
+Enter
 Type "cd docs/samples && clear"
 Enter
 Show
 
-Type "jsonformat data.json | head -20"
-Sleep 500ms
+Type "jsonformat -q build data.json"
+Sleep 400ms
 Enter
 Sleep 3s
 
-Type "clear && jsonformat broken.json"
+Hide
+Type "clear"
+Enter
+Show
+Type "jsonformat broken.json"
 Enter
 Sleep 4s
 
-Type "clear && jsonformat -q 'tools[0].tags' data.json"
+Type `echo '{"name": "go", "tags": ["cli", "json",]}' | jsonformat`
 Enter
-Sleep 2s
+Sleep 4s
 
-Type `echo '{"b":2,"a":[1,2,],}' | jsonformat`
+Hide
+Type "clear"
+Enter
+Show
+Type "jsonformat --sort-keys -q 'maintainers[0]' data.json"
 Enter
 Sleep 3s
 
-Type "clear && jsonformat --check *.json; echo exit=$?"
+Type "jsonformat --check *.json; echo exit=$?"
 Enter
-Sleep 4s
+Sleep 5s

@@ -71,9 +71,13 @@ lint: ## Run golangci-lint (falls back to go run when not installed)
 bench: ## Run the dirsize and portscout benchmarks
 	go test -run '^$$' -bench . -benchmem ./internal/dirsize/ ./internal/portscout/
 
+# On Windows, vhs runs the tapes in WSL's bash, which needs Linux binaries next
+# to the .exe files (vhs itself checks for the .exe ones):
+#   make build && GOOS=linux make demo
 .PHONY: demo
 demo: build ## Render the demo GIFs in docs/demo with charmbracelet/vhs
 	@command -v vhs >/dev/null 2>&1 || { echo "vhs not found: https://github.com/charmbracelet/vhs#installation"; exit 1; }
+	go build -o bin/fakeports$(EXE) docs/tapes/fakeports.go
 	@for t in docs/tapes/*.tape; do \
 		echo "  vhs    $$t"; \
 		PATH="$(CURDIR)/bin:$$PATH" vhs "$$t" || exit 1; \

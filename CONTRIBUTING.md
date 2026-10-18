@@ -29,6 +29,13 @@ make lint         # golangci-lint (uses `go run` if it isn't installed)
 - Progress indicators go to stderr and only when stderr is a terminal.
 - No panics on bad input; errors are short, specific and actionable.
 
+## Demo GIFs
+
+The GIFs in `docs/demo/` are rendered from the tapes in `docs/tapes/` with
+[VHS](https://github.com/charmbracelet/vhs) (needs `vhs`, `ttyd` and `ffmpeg`). Re-render them after changing
+output formatting: `make demo`. On Windows, VHS runs the tapes in WSL's bash, so build both flavours:
+`make build && GOOS=linux make demo`. The reqping tape needs internet access.
+
 ## Tests
 
 - Prefer table-driven tests for logic and in-process CLI tests via `cliutil.Run`.

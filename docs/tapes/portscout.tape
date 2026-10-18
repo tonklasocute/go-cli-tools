@@ -2,36 +2,46 @@
 Output docs/demo/portscout.gif
 
 Require portscout
-Require go
+Require fakeports
 
 Set Shell "bash"
 Set FontSize 16
 Set Width 1280
-Set Height 760
+Set Height 680
 Set Padding 24
 Set Theme "Catppuccin Mocha"
-Set TypingSpeed 45ms
+Set TypingSpeed 40ms
 Set WindowBar Colorful
 
-# Pretend a few dev services are running.
 Hide
-Type "go run docs/tapes/fakeports.go 5173 5432 6379 8080 & sleep 3 && clear"
+Type `export PATH="$PWD/bin:$PATH" PS1="\[\e[1;35m\]❯\[\e[0m\] "`
 Enter
-Sleep 4s
+# Pretend a few dev services are running.
+Type "fakeports 5173 5432 6379 8080 & sleep 1; clear"
+Enter
+Sleep 5s
 Show
 
-Type "portscout"
-Sleep 500ms
+Type "portscout -p 3000,3306,5173,5432,6379,8080,9200,27017"
+Sleep 400ms
 Enter
 Sleep 4s
 
-Type "clear && portscout -p 1-20000 --workers 500"
+Hide
+Type "clear"
+Enter
+Show
+Type "portscout -p 1-20000 --workers 500"
 Enter
 Sleep 5s
 
-Type "clear && portscout --expect-open 5432,27017; echo exit=$?"
+Hide
+Type "clear"
 Enter
-Sleep 4s
+Show
+Type "portscout --expect-open 5432,27017; echo exit=$?"
+Enter
+Sleep 5s
 
 Hide
 Type "kill %1"
