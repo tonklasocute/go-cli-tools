@@ -1,0 +1,40 @@
+{
+  "name": "go-cli-tools",
+  "version": "0.1.0",
+  "description": "Small, sharp command-line tools written in Go",
+  "homepage": "https://example.com/tools?lang=go&sort=stars",
+  "license": "MIT",
+  "private": false,
+  "stars": 1280,
+  "rating": 4.85,
+  "downloads": 12345678901234567890,
+  "precision": 1.000000000000000000001,
+  "deprecated": null,
+  "greeting": "สวัสดี, world <3",
+  "maintainers": [
+    {"name": "Ada", "email": "ada@example.com", "roles": ["owner", "release"]},
+    {"name": "Somchai", "email": "somchai@example.com", "roles": ["maintainer"]}
+  ],
+  "tools": [
+    {
+      "name": "jsonformat",
+      "stable": true,
+      "tags": ["json", "pretty", "validate"],
+      "flags": {"indent": 2, "minify": false}
+    },
+    {
+      "name": "dirsize",
+      "stable": true,
+      "tags": ["disk", "usage"],
+      "flags": {}
+    }
+  ],
+  "build": {
+    "go": "1.22",
+    "targets": ["linux/amd64", "darwin/arm64", "windows/amd64"],
+    "ldflags": "-s -w",
+    "cgo": false
+  },
+  "changelog": [],
+  "checksum": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+}
