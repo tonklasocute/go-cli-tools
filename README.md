@@ -308,7 +308,7 @@ go-cli-tools/
 │   ├── version/              # version info via -ldflags (falls back to Go build info)
 │   └── testutil/             # build-and-run helpers for integration tests
 ├── docs/                     # demo GIFs, VHS tapes, sample data
-├── .github/workflows/        # CI (lint + 3 OS × 2 Go versions) and GoReleaser release
+├── .github/workflows/        # CI (lint + race tests on Linux/macOS/Windows, Go 1.22 & stable) and release
 ├── Makefile
 └── .goreleaser.yaml
 ```
