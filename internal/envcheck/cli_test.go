@@ -334,11 +334,14 @@ func TestCLIInit(t *testing.T) {
 	if r.code != cliutil.ExitUsage || !strings.Contains(r.err, "already exists (use --force to overwrite)") {
 		t.Fatalf("overwrite refused: code=%d %q", r.code, r.err)
 	}
-	if err := os.WriteFile(out, []byte("old"), 0o600); err != nil {
+	// A marker that cannot appear in the generated header (which embeds the
+	// temp path, e.g. macOS /var/folders/...).
+	const stale = "STALE-SCHEMA-MARKER"
+	if err := os.WriteFile(out, []byte(stale), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	r = runCLI(t, "", "init", env, "-o", out, "--force")
-	if data, _ := os.ReadFile(out); r.code != 0 || strings.Contains(string(data), "old") {
+	if data, _ := os.ReadFile(out); r.code != 0 || strings.Contains(string(data), stale) {
 		t.Fatalf("--force: code=%d data=%q", r.code, data)
 	}
 
