@@ -1,0 +1,122 @@
+# GoReleaser v2 configuration — https://goreleaser.com
+version: 2
+
+project_name: go-cli-tools
+
+before:
+  hooks:
+    - go mod download
+    - go test ./...
+
+builds:
+  - &build
+    id: envcheck
+    main: ./cmd/envcheck
+    binary: envcheck
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/tonklasocute/go-cli-tools/internal/version.Version=v{{ .Version }}
+      - -X github.com/tonklasocute/go-cli-tools/internal/version.Commit={{ .ShortCommit }}
+      - -X github.com/tonklasocute/go-cli-tools/internal/version.Date={{ .Date }}
+    mod_timestamp: "{{ .CommitTimestamp }}"
+  - <<: *build
+    id: portscout
+    main: ./cmd/portscout
+    binary: portscout
+  - <<: *build
+    id: jsonformat
+    main: ./cmd/jsonformat
+    binary: jsonformat
+  - <<: *build
+    id: dirsize
+    main: ./cmd/dirsize
+    binary: dirsize
+  - <<: *build
+    id: reqping
+    main: ./cmd/reqping
+    binary: reqping
+
+archives:
+  - id: default
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - LICENSE
+      - README.md
+      - CHANGELOG.md
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  use: git
+  sort: asc
+  filters:
+    exclude:
+      - "^docs"
+      - "^test"
+      - "^chore"
+      - "^ci"
+      - "^style"
+      - "Merge pull request"
+      - "Merge branch"
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]-]+\))??!?:.+$'
+      order: 0
+    - title: Bug fixes
+      regexp: '^.*?fix(\([[:word:]-]+\))??!?:.+$'
+      order: 1
+    - title: Performance
+      regexp: '^.*?perf(\([[:word:]-]+\))??!?:.+$'
+      order: 2
+    - title: Refactoring
+      regexp: '^.*?refactor(\([[:word:]-]+\))??!?:.+$'
+      order: 3
+    - title: Other changes
+      order: 999
+
+release:
+  github:
+    owner: tonklasocute
+    name: go-cli-tools
+  prerelease: auto
+  name_template: "v{{ .Version }}"
+
+# Homebrew tap — uncomment once github.com/tonklasocute/homebrew-tap exists and a
+# HOMEBREW_TAP_GITHUB_TOKEN secret (a PAT with contents:write on the tap) is set
+# in this repo; then pass it to goreleaser in .github/workflows/release.yml.
+#
+# homebrew_casks:
+#   - name: go-cli-tools
+#     binaries: [envcheck, portscout, jsonformat, dirsize, reqping]
+#     homepage: https://github.com/tonklasocute/go-cli-tools
+#     description: "Five small, fast CLI tools for everyday dev workflows."
+#     license: MIT
+#     repository:
+#       owner: tonklasocute
+#       name: homebrew-tap
+#       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+#     commit_author:
+#       name: tonklasocute
+#       email: 160707818+tonklasocute@users.noreply.github.com
+#     directory: Casks
+#     hooks:
+#       post:
+#         install: |
+#           if OS.mac?
+#             system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}"]
+#           end
