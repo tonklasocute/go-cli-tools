@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/tonklasocute/go-cli-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/tonklasocute/go-cli-tools/actions/workflows/ci.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/tonklasocute/go-cli-tools.svg)](https://pkg.go.dev/github.com/tonklasocute/go-cli-tools)
-[![Go Report Card](https://goreportcard.com/badge/github.com/tonklasocute/go-cli-tools)](https://goreportcard.com/report/github.com/tonklasocute/go-cli-tools)
+[![Go version](https://img.shields.io/github/go-mod/go-version/tonklasocute/go-cli-tools)](go.mod)
 [![Release](https://img.shields.io/github/v/release/tonklasocute/go-cli-tools?sort=semver)](https://github.com/tonklasocute/go-cli-tools/releases)
 [![License: MIT](https://img.shields.io/github/license/tonklasocute/go-cli-tools)](LICENSE)
 
