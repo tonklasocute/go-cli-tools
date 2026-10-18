@@ -46,7 +46,13 @@ jobs:
         run: go build ./...
       - name: Test (race + coverage)
         shell: bash
-        run: go test -race -covermode=atomic -coverpkg=./internal/... -coverprofile=coverage.out ./...
+        # Go 1.22's race-enabled binaries lack an LC_UUID load command and are
+        # rejected by dyld on macOS 15 runners, so that one combination runs
+        # without -race (macOS still gets race coverage from Go stable).
+        run: |
+          race=-race
+          if [ "$RUNNER_OS" = "macOS" ] && [ "${{ matrix.go }}" = "1.22" ]; then race=; fi
+          go test $race -covermode=atomic -coverpkg=./internal/... -coverprofile=coverage.out ./...
       - name: Coverage summary
         shell: bash
         run: go tool cover -func=coverage.out | tail -n 1
