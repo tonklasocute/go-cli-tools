@@ -1,0 +1,21 @@
+# reqping targets file
+#
+# One target per line:   [name] url [expected_status]
+#   name             optional display name (defaults to the URL host)
+#   url              must start with http:// or https://
+#   expected_status  optional: a code (200), a class (2xx) or a list (200,204,3xx);
+#                    default is any 2xx (2xx or 3xx with --no-follow)
+# Blank lines and # comments are ignored.
+#
+# Try:  reqping -f docs/samples/targets.txt
+#       reqping -f docs/samples/targets.txt --count 3
+#       reqping -f docs/samples/targets.txt --json
+
+go-dev      https://go.dev
+pkg-go-dev  https://pkg.go.dev                2xx
+github      https://github.com                200
+go-proxy    https://proxy.golang.org/github.com/spf13/cobra/@v/list   200
+
+# Deliberate failure: this page does not exist, so the server answers 404
+# and the target is reported unhealthy (exit code 1).
+missing     https://go.dev/this-page-does-not-exist   200
